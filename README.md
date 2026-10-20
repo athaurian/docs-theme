@@ -16,3 +16,9 @@ If an image has a light and a dark version, its path ends with `#only-light` or
 [project.markdown_extensions]
 zensical.extensions.glightbox.auto_themed = true
 ```
+
+## Theme switch
+
+Switching between light and dark uses a diagonal wipe from the top-right corner
+to the bottom-left. If the browser does not support it, or reduced motion is
+enabled, the colors change immediately.
