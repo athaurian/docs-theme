@@ -22,4 +22,5 @@ zensical.extensions.glightbox.auto_themed = true
 Switching between light and dark uses a diagonal wipe from the top-right corner
 to the bottom-left. If the browser does not support it, or reduced motion is
 enabled, the colors change immediately. Scrolling is paused for the short wipe
-so the old and new views stay aligned, then resumes from the same position.
+so the old and new views stay aligned, and the sticky header is pinned in its
+viewport position while the wipe runs.
