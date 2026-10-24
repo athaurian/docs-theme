@@ -24,7 +24,9 @@ zensical.extensions.glightbox.auto_themed = true
 ## Social banner
 
 Set `og_image` under `[project.extra]` to a 1200x630 image path relative to the
-site URL. Without it, link previews are text only.
+site URL. Without it, link previews are text only. When you replace the image,
+change its URL, for example with a version query, because preview clients cache
+it.
 
 ## oEmbed
 
