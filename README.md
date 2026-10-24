@@ -24,9 +24,9 @@ zensical.extensions.glightbox.auto_themed = true
 ## Favicons
 
 Each site keeps its monogram at `docs/favicon.svg`. Run `make favicons` from the
-theme checkout to regenerate `favicon.ico`, `favicon-32x32.png`, and
-`apple-touch-icon.png` for every site. The target needs `rsvg-convert` and
-ImageMagick.
+theme checkout to regenerate `favicon.ico`, `favicon-32x32.png`,
+`favicon-192x192.png`, and `apple-touch-icon.png` for every site. The target
+needs `rsvg-convert` and ImageMagick.
 
 ## Theme switch
 
