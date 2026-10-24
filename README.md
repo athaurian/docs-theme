@@ -21,6 +21,13 @@ If an image has a light and a dark version, its path ends with `#only-light` or
 zensical.extensions.glightbox.auto_themed = true
 ```
 
+## Favicons
+
+Each site keeps its monogram at `docs/favicon.svg`. Run `make favicons` from the
+theme checkout to regenerate `favicon.ico`, `favicon-32x32.png`, and
+`apple-touch-icon.png` for every site. The target needs `rsvg-convert` and
+ImageMagick.
+
 ## Theme switch
 
 Switching between light and dark uses a diagonal wipe from the top-right corner
