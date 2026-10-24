@@ -21,6 +21,11 @@ If an image has a light and a dark version, its path ends with `#only-light` or
 zensical.extensions.glightbox.auto_themed = true
 ```
 
+## Social banner
+
+Set `og_image` under `[project.extra]` to a 1200x630 image path relative to the
+site URL. Without it, link previews stay text-only.
+
 ## Favicons
 
 Each site keeps its monogram at `docs/favicon.svg`. Run `make favicons` from the
