@@ -2,7 +2,7 @@
 # /// script
 # dependencies = ["fonttools>=4.40"]
 # ///
-"""Turn any letter into a monogram favicon (or square logo tile).
+"""Monogram favicon and square logo tile generator.
 
 The glyph is converted into a self-contained SVG path, so the output references
 no font and renders identically everywhere. Tile size, corner radius, colours,
@@ -70,6 +70,7 @@ def load_font(path: Path, weight: float) -> TTFont:
 
 
 def glyph_of(font: TTFont, letter: str):
+    """Return the font's glyph set and the glyph name for one character."""
     cmap = font.getBestCmap()
     if ord(letter) not in cmap:
         sys.exit(f"error: no glyph for {letter!r} in this font")
@@ -78,6 +79,7 @@ def glyph_of(font: TTFont, letter: str):
 
 
 def glyph_bounds(glyph_set, name: str) -> tuple[float, float, float, float]:
+    """Return the glyph outline bounds, or exit when there is no outline."""
     pen = BoundsPen(glyph_set)
     glyph_set[name].draw(pen)
     if pen.bounds is None:
@@ -86,7 +88,7 @@ def glyph_bounds(glyph_set, name: str) -> tuple[float, float, float, float]:
 
 
 def monogram_path(glyph_set, name: str, size: int, fill: float) -> str:
-    """Outline of the glyph, flipped to SVG coordinates and centred on the tile."""
+    """Return the glyph outline flipped to SVG coordinates and centred on the tile."""
     x0, y0, x1, y1 = glyph_bounds(glyph_set, name)
     width, height = x1 - x0, y1 - y0
     scale = fill * size / max(width, height)
@@ -99,6 +101,7 @@ def monogram_path(glyph_set, name: str, size: int, fill: float) -> str:
 
 
 def markup(size: int, radius: float, background: str, foreground: str, data: str) -> str:
+    """Wrap an SVG path in a rounded tile."""
     return (
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {size} {size}">\n'
         f'  <rect width="{size}" height="{size}" rx="{radius}" fill="{background}"/>\n'
