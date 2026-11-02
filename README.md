@@ -1,6 +1,6 @@
 # docs-theme
 
-This is the theme and tooling I use for my documentation sites.
+Hi. This is the theme and tooling I use for my documentation sites.
 
 ## Screenshots
 
@@ -42,7 +42,9 @@ needs `rsvg-convert` and ImageMagick.
 
 ## Theme switch
 
-The theme switch uses a diagonal wipe from the top-right corner to the
-bottom-left. If the browser does not support it, or reduced motion is on, the
-colors change immediately. Scrolling pauses during the wipe and the sticky
-header stays put.
+The theme switch animates between light and dark, and changes instantly when
+reduced motion is on or the browser does not support the effect.
+
+## License
+
+Released under the MIT license. See [LICENSE](LICENSE) for the full text.
