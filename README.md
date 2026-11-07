@@ -1,4 +1,9 @@
+<div align="center">
+<img src="monogram.svg" alt="docs-theme monogram" width="128">
+
 # docs-theme
+
+</div>
 
 Hi. This is the theme and tooling I use for my documentation sites.
 
