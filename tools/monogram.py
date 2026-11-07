@@ -6,11 +6,12 @@
 
 The glyph is converted into a self-contained SVG path, so the output references
 no font and renders identically everywhere. Tile size, corner radius, colours,
-and how much of the tile the letter's outline fills are all arguments.
+and how much of the tile the character's outline fills are all arguments.
 
 Usage:
     uv run tools/monogram.py a -o public/favicon.svg
     uv run tools/monogram.py B --font source-code-pro -o favicon.svg
+    uv run tools/monogram.py '¶' --font great-vibes --stroke 2 -o favicon.svg
     uv run tools/monogram.py a --font google-sans --weight 500 -o favicon.svg
     uv run tools/monogram.py x --font-url https://example.com/Font.ttf -o x.svg
 
@@ -38,6 +39,20 @@ FONTS = {
     "google-sans-code": "https://raw.githubusercontent.com/google/fonts/main/ofl/googlesanscode/GoogleSansCode[wght].ttf",
     "source-code-pro": "https://raw.githubusercontent.com/google/fonts/main/ofl/sourcecodepro/SourceCodePro[wght].ttf",
     "google-sans": "https://raw.githubusercontent.com/google/fonts/main/ofl/googlesans/GoogleSans[GRAD,opsz,wght].ttf",
+    # Calligraphic and handwritten scripts (OFL unless noted).
+    "allura": "https://raw.githubusercontent.com/google/fonts/main/ofl/allura/Allura-Regular.ttf",
+    "caveat": "https://raw.githubusercontent.com/google/fonts/main/ofl/caveat/Caveat[wght].ttf",
+    "courgette": "https://raw.githubusercontent.com/google/fonts/main/ofl/courgette/Courgette-Regular.ttf",
+    "dancing-script": "https://raw.githubusercontent.com/google/fonts/main/ofl/dancingscript/DancingScript[wght].ttf",
+    "great-vibes": "https://raw.githubusercontent.com/google/fonts/main/ofl/greatvibes/GreatVibes-Regular.ttf",
+    "italianno": "https://raw.githubusercontent.com/google/fonts/main/ofl/italianno/Italianno-Regular.ttf",
+    "kaushan-script": "https://raw.githubusercontent.com/google/fonts/main/ofl/kaushanscript/KaushanScript-Regular.ttf",
+    "pacifico": "https://raw.githubusercontent.com/google/fonts/main/ofl/pacifico/Pacifico-Regular.ttf",
+    "parisienne": "https://raw.githubusercontent.com/google/fonts/main/ofl/parisienne/Parisienne-Regular.ttf",
+    "pinyon-script": "https://raw.githubusercontent.com/google/fonts/main/ofl/pinyonscript/PinyonScript-Regular.ttf",
+    # Yellowtail and Satisfy live in the Apache directory.
+    "satisfy": "https://raw.githubusercontent.com/google/fonts/main/apache/satisfy/Satisfy-Regular.ttf",
+    "yellowtail": "https://raw.githubusercontent.com/google/fonts/main/apache/yellowtail/Yellowtail-Regular.ttf",
 }
 
 CACHE_DIR = Path.home() / ".cache" / "monogram-fonts"
@@ -100,24 +115,42 @@ def monogram_path(glyph_set, name: str, size: int, fill: float) -> str:
     return pen.getCommands()
 
 
-def markup(size: int, radius: float, background: str, foreground: str, data: str) -> str:
-    """Wrap an SVG path in a rounded tile."""
+def markup(
+    size: int,
+    radius: float,
+    background: str,
+    foreground: str,
+    data: str,
+    stroke: float = 0,
+) -> str:
+    """Wrap an SVG path in a rounded tile.
+
+    A stroke in the foreground colour thickens a calligraphic hairline without
+    distorting the outline, which keeps script faces readable at favicon sizes.
+    """
+    weight = (
+        f' stroke="{foreground}" stroke-width="{stroke:g}"'
+        f' stroke-linejoin="round" stroke-linecap="round"'
+        if stroke
+        else ""
+    )
     return (
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {size} {size}">\n'
         f'  <rect width="{size}" height="{size}" rx="{radius}" fill="{background}"/>\n'
-        f'  <path d="{data}" fill="{foreground}"/>\n'
+        f'  <path d="{data}" fill="{foreground}"{weight}/>\n'
         f"</svg>\n"
     )
 
 
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0], formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("letter", help="the single letter to draw")
+    parser.add_argument("letter", help="the single character to draw")
     parser.add_argument("-o", "--output", default="favicon.svg", help="output path, or - for stdout")
     parser.add_argument("--font", choices=sorted(FONTS), default="google-sans-code", help="built-in font (default: google-sans-code)")
     parser.add_argument("--font-url", help="URL of a .ttf/.otf to use instead of a built-in font")
     parser.add_argument("--weight", type=float, default=700, help="wght value for variable fonts (default: 700)")
     parser.add_argument("--fill", type=float, default=0.7, help="fraction of the tile the outline fills (default: 0.7)")
+    parser.add_argument("--stroke", type=float, default=0, help="outline stroke width in viewBox units, to thicken a hairline (default: 0)")
     parser.add_argument("--size", type=int, default=64, help="viewBox size in px (default: 64)")
     parser.add_argument("--radius", type=float, default=8, help="corner radius in px (default: 8)")
     parser.add_argument("--bg", "--background", default="#121212", help="tile colour")
@@ -126,14 +159,14 @@ def main(argv: list[str] | None = None) -> None:
     args = parser.parse_args(argv)
 
     if len(args.letter) != 1:
-        sys.exit("error: give exactly one letter")
+        sys.exit("error: give exactly one character")
 
     url = args.font_url or FONTS[args.font]
     font_path = fetch_font(url, args.cache_dir)
     font = load_font(font_path, args.weight)
     glyph_set, name = glyph_of(font, args.letter)
     data = monogram_path(glyph_set, name, args.size, args.fill)
-    svg = markup(args.size, args.radius, args.bg, args.fg, data)
+    svg = markup(args.size, args.radius, args.bg, args.fg, data, args.stroke)
 
     if args.output == "-":
         sys.stdout.write(svg)
