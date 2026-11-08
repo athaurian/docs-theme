@@ -10,6 +10,7 @@ sync:
 		install -D -m 644 overrides/home.html $$site/overrides/home.html; \
 		install -D -m 644 overrides/main.html $$site/overrides/main.html; \
 		install -D -m 644 javascripts/theme-transition.js $$site/docs/javascripts/theme-transition.js; \
+		install -D -m 644 javascripts/search-fix.js $$site/docs/javascripts/search-fix.js; \
 		printf 'synced %s\n' "$$site"; \
 	done
 
@@ -37,6 +38,7 @@ check:
 		diff -u overrides/home.html $$site/overrides/home.html || status=1; \
 		diff -u overrides/main.html $$site/overrides/main.html || status=1; \
 		diff -u javascripts/theme-transition.js $$site/docs/javascripts/theme-transition.js || status=1; \
+		diff -u javascripts/search-fix.js $$site/docs/javascripts/search-fix.js || status=1; \
 		for file in favicon.ico favicon-32x32.png favicon-192x192.png apple-touch-icon.png; do \
 			test -f $$site/docs/$$file || { printf 'missing %s/docs/%s (run make favicons)\n' "$$site" "$$file" >&2; status=1; }; \
 		done; \
