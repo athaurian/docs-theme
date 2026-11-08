@@ -50,6 +50,10 @@ needs `rsvg-convert` and ImageMagick.
 The theme switch animates between light and dark, and changes instantly when
 reduced motion is on or the browser does not support the effect.
 
+## Compatibility
+
+Tested with Zensical 0.1.0.
+
 ## License
 
 Released under the MIT license. See [LICENSE](LICENSE) for the full text.
