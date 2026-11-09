@@ -1,11 +1,15 @@
 # Copy the theme into each site checkout, and report drift without writing.
 
 SITES ?= $(HOME)/Projects/github/athaurian/calpdf $(HOME)/.local/share/chezmoi
+FONTS := fonts/geist-variable.woff2 fonts/geist-italic-variable.woff2 fonts/geist-mono-variable.woff2 fonts/geist-mono-italic-variable.woff2 fonts/OFL.txt
 
 .PHONY: sync check favicons
 
 sync:
 	@for site in $(SITES); do \
+		for font in $(FONTS); do \
+			install -D -m 644 "$$font" "$$site/docs/$$font"; \
+		done; \
 		install -D -m 644 stylesheets/extra.css $$site/docs/stylesheets/extra.css; \
 		install -D -m 644 overrides/home.html $$site/overrides/home.html; \
 		install -D -m 644 overrides/main.html $$site/overrides/main.html; \
@@ -34,6 +38,9 @@ favicons:
 check:
 	@status=0; \
 	for site in $(SITES); do \
+		for font in $(FONTS); do \
+			diff -u "$$font" "$$site/docs/$$font" || status=1; \
+		done; \
 		diff -u stylesheets/extra.css $$site/docs/stylesheets/extra.css || status=1; \
 		diff -u overrides/home.html $$site/overrides/home.html || status=1; \
 		diff -u overrides/main.html $$site/overrides/main.html || status=1; \

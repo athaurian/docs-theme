@@ -26,6 +26,12 @@ If an image has a light and a dark version, end its path with `#only-light` or
 zensical.extensions.glightbox.auto_themed = true
 ```
 
+## Fonts
+
+The theme self-hosts Geist and Geist Mono from `fonts/` (SIL Open Font License,
+see `fonts/OFL.txt`). Headings and the header title use Merriweather from Google
+Fonts.
+
 ## Social banner
 
 Set `og_image` under `[project.extra]` to a 1200x630 image path relative to the
