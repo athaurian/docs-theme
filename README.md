@@ -5,61 +5,37 @@
 
 </div>
 
-Hi. This is the theme and tooling I use for my documentation sites.
+Hi. This is the shared code and config for my documentation sites.
 
-## Screenshots
+## Syncing and verification
 
-Screenshots follow the page's light or dark mode, including in the lightbox. A
-single screenshot sits in a `figure.screenshot`, and a pair sits in an
-`.image-pair`.
+Consumer repositories vendor these assets rather than pulling them at build time. From this repository:
 
-Screenshot corners are rounded by default. Add `no-radius` to the figure or
-pair when the image has rounded corners of its own, such as a tight window crop
-or a card with transparent corners.
-
-If an image has a light and a dark version, end its path with `#only-light` or
-`#only-dark`. The theme shows the matching version. The site config turns on
-`auto_themed` so each mode keeps its own lightbox gallery:
-
-```toml
-[project.markdown_extensions]
-zensical.extensions.glightbox.auto_themed = true
+```bash
+make sync      # copy theme overrides and assets into sibling repositories
+make check     # verify templates, styles, and scripts
+make favicons  # regenerate favicon assets via tools/monogram.py
 ```
 
-## Fonts
+## Screenshots and themed images
 
-The theme self-hosts Geist and Geist Mono from `fonts/` (SIL Open Font License,
-see `fonts/OFL.txt`). Headings and the header title use Merriweather from Google
-Fonts.
+Wrap screenshots in `<figure class="screenshot">` (or `<div class="image-pair">` for side-by-side comparisons).
 
-## Social banner
+- **Border radius**: Screenshots get rounded corners and a subtle border by default. Add the `no-radius` class when capturing full-bleed unrounded surfaces such as status bars.
+- **Light and dark variants**: Append `#only-light` or `#only-dark` to image URLs to swap screenshots with the active theme, or set `auto_themed = true` in the site configuration when light/dark pairs follow the standard naming convention.
 
-Set `og_image` under `[project.extra]` to a 1200x630 image path relative to the
-site URL. Without it, link previews are text only. When you replace the image,
-change its URL, for example with a version query, because preview clients cache
-it.
+## Typography and UI workarounds
 
-## oEmbed
+- **Fonts**: Uses **Geist** for UI, **Merriweather** for headings and body prose, and **Geist Mono** for code blocks.
+- **Search modal (`javascripts/search-fix.js`)**: Zensical `0.1.0` renders its search UI inside an open Shadow DOM root that inherits negative heading letter-spacing inconsistently. `search-fix.js` attaches to the shadow root to normalize input and result spacing.
+- **Theme switch transitions**: Temporarily suppresses CSS transitions during light/dark mode toggles so components repaint together instead of fading at different speeds.
 
-Set `oembed` under `[project.extra]` to a JSON file path relative to the site
-URL. Discord reads `provider_name` and `provider_url` from the file to link the
-site name in a preview.
+## OpenGraph cards and `tools/monogram.py`
 
-## Favicons
+`tools/monogram.py` renders repository monograms, favicons, and OpenGraph social cards (`og_image` / `oembed`), caching rendered fonts and intermediate assets under `~/.cache/monogram-fonts/`.
 
-Each site keeps its monogram at `docs/favicon.svg`. Run `make favicons` from
-this checkout to regenerate the ICO and PNG icons for every site. The target
-needs `rsvg-convert` and ImageMagick.
-
-## Theme switch
-
-The theme switch animates between light and dark, and changes instantly when
-reduced motion is on or the browser does not support the effect.
-
-## Compatibility
-
-Tested with Zensical 0.1.0.
+When updating an OpenGraph card, increment the query string on `og_image` so crawlers invalidate cached previews.
 
 ## License
 
-Released under the MIT license. See [LICENSE](LICENSE) for the full text.
+MIT
