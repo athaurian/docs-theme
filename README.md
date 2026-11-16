@@ -21,14 +21,14 @@ make favicons  # regenerate favicon assets via tools/monogram.py
 
 Wrap screenshots in `<figure class="screenshot">` (or `<div class="image-pair">` for side-by-side comparisons).
 
-- **Border radius**: Screenshots get rounded corners and a subtle border by default. Add the `no-radius` class when capturing full-bleed unrounded surfaces such as status bars.
-- **Light and dark variants**: Append `#only-light` or `#only-dark` to image URLs to swap screenshots with the active theme, or set `auto_themed = true` in the site configuration when light/dark pairs follow the standard naming convention.
+- **Border radius:** Screenshots get rounded corners and a subtle border by default. Add the `no-radius` class when capturing full-bleed unrounded surfaces such as status bars.
+- **Light and dark variants:** Append `#only-light` or `#only-dark` to image URLs to swap screenshots with the active theme, or set `auto_themed = true` in the site configuration when light/dark pairs follow the standard naming convention.
 
 ## Typography and UI workarounds
 
-- **Fonts**: Uses **Geist** for UI, **Merriweather** for headings and body prose, and **Geist Mono** for code blocks.
-- **Search modal (`javascripts/search-fix.js`)**: Zensical `0.1.0` renders its search UI inside an open Shadow DOM root that inherits negative heading letter-spacing inconsistently. `search-fix.js` attaches to the shadow root to normalize input and result spacing.
-- **Theme switch transitions**: Temporarily suppresses CSS transitions during light/dark mode toggles so components repaint together instead of fading at different speeds.
+- **Fonts:** Uses **Geist** for UI, **Merriweather** for headings and body prose, and **Geist Mono** for code blocks.
+- **Search modal (`javascripts/search-fix.js`):** Zensical `0.1.0` renders its search UI inside an open Shadow DOM root that inherits negative heading letter-spacing inconsistently. `search-fix.js` attaches to the shadow root to normalize input and result spacing.
+- **Theme switch transitions:** Temporarily suppresses CSS transitions during light/dark mode toggles so components repaint together instead of fading at different speeds.
 
 ## OpenGraph cards and `tools/monogram.py`
 
