@@ -27,7 +27,7 @@ Wrap screenshots in `<figure class="screenshot">` (or `<div class="image-pair">`
 ## Typography and UI workarounds
 
 - **Fonts:** Uses **Geist** for UI, **Merriweather** for headings and body prose, and **Geist Mono** for code blocks.
-- **Search modal (`javascripts/search-fix.js`):** Zensical `0.1.0` renders its search UI inside an open Shadow DOM root that inherits negative heading letter-spacing inconsistently. `search-fix.js` attaches to the shadow root to normalize input and result spacing.
+- **Search modal (`javascripts/search-fix.js`):** Zensical `0.1.3` renders its search UI inside an open Shadow DOM root whose stylesheet sets negative letter-spacing on the dialog and its input. `search-fix.js` attaches to the shadow root to normalize input and result spacing.
 - **Theme switch transitions:** Temporarily suppresses CSS transitions during light/dark mode toggles so components repaint together instead of fading at different speeds.
 
 ## OpenGraph cards and `tools/monogram.py`
